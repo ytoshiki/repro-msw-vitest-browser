@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed } from "vue";
 import { useQuery } from "@vue/apollo-composable";
 import gql from "graphql-tag";
-
-const fetchdata = ref();
 
 const query = gql`
   query GetPokemons {
@@ -15,7 +13,7 @@ const query = gql`
   }
 `;
 
-const { onResult, refetch, result } = useQuery(query);
+const { refetch, result } = useQuery(query);
 
 const name = computed(() => result.value?.pokemons[0].name ?? "");
 

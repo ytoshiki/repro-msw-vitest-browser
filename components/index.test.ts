@@ -9,13 +9,19 @@ import {
 } from "vitest";
 import Index from "./index.vue";
 import { worker } from "../mock/worker";
-import { flushPromises } from "@vue/test-utils";
-import render from "../mock/render";
+import { render } from "vitest-browser-vue";
 import { createApolloProvider } from "../mock/createApolloProvider";
 
 const { provideApollo } = createApolloProvider();
 
 describe("Index.vue", () => {
+  // ⭐️Commenting out this mock, a test will pass
+  vi.mock("anyModuleToMock", () => ({
+    default: {
+      key: "value",
+    },
+  }));
+
   beforeAll(async () => {
     await worker.start();
   });
@@ -25,15 +31,17 @@ describe("Index.vue", () => {
   });
 
   afterAll(async () => {
-    worker.stop();
+    // Commenting out for a testing purpose
+    // worker.stop();
   });
 
-  test("Query is mocked", async () => {
-    const c = render(Index, provideApollo());
-    // await c.getByRole("button").click();
+  test("Pokemon Query is successfully mocked", async () => {
+    const component = render(Index, {
+      global: {
+        provide: provideApollo(),
+      },
+    });
 
-    await new Promise((resolve) => setTimeout(resolve, 200));
-    expect(c.text()).toContain("Mocked Pokemon");
-    // await expect.element(c.getByText("Mocked Pokemon")).toBeVisible();
+    await expect.element(component.getByText("Mocked Pokemon")).toBeVisible();
   });
 });

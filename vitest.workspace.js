@@ -11,18 +11,10 @@ const sharedConfig = defineConfig({
   test: {
     globals: true,
     exclude: ["**/node_modules/**"],
-    server: {
-      deps: {
-        inline: ["vuetify"],
-      },
-    },
-
     browser: {
       enabled: true,
       name: "chromium",
       provider: "playwright",
-      // https://playwright.dev
-      providerOptions: {},
     },
   },
 });
@@ -31,7 +23,7 @@ const workspaces = [];
 
 const config = defineProject({
   test: {
-    name: "abcdefg",
+    name: "projectA",
   },
 });
 
